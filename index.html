@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chroniques du Royaume</title>
+  <style>
+    :root {
+      --ink: #2b2113;
+      --gold: #c7a243;
+      --gold-d: #9b7a25;
+      --parch: #f6ecd4;
+      --parch-d: #e5d4ac;
+      --parch-edge: #d6c091;
+      --garnet: #7a1c1c;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .25);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #10100e;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 25% 15%, rgba(255, 255, 255, .05), transparent 35%),
+        radial-gradient(circle at 75% 35%, rgba(255, 255, 255, .05), transparent 35%),
+        repeating-linear-gradient(90deg, #2b2b29 0 60px, #232321 60px 62px),
+        repeating-linear-gradient(0deg, #353532 0 60px, #2a2a28 60px 62px);
+      filter: contrast(1) brightness(.9);
+    }
+
+    .scroll {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 28px 24px 32px;
+      background: linear-gradient(180deg, var(--parch) 0%, var(--parch-d) 100%);
+      border: 12px solid var(--parch-edge);
+      border-image: repeating-linear-gradient(45deg, var(--parch-edge), var(--parch-edge) 14px, #c9b487 14px, #c9b487 28px) 12;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .ribbons {
+      position: absolute;
+      inset: auto 16px -16px 16px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .ribbon {
+      width: 70px;
+      height: 90px;
+      background: linear-gradient(180deg, var(--garnet), #4e0f0f);
+      clip-path: polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%);
+      box-shadow: 0 8px 14px rgba(0, 0, 0, .35)
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 10px 4px 22px;
+      border-bottom: 2px solid #cdb98d
+    }
+
+    .crest {
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 30% 30%, #fff8, #0000 40%),
+        conic-gradient(from 0deg at 50% 50%, var(--gold) 0 25%, #6b0 0 50%, #246 0 75%, #933 0 100%);
+      border: 3px solid var(--gold);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .25)
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Times New Roman", Georgia, serif;
+      font-weight: 900;
+      letter-spacing: .5px;
+      font-size: clamp(26px, 4vw, 46px);
+      color: var(--ink);
+      text-shadow: 0 1px 0 #fff9
+    }
+
+    .subtitle {
+      font-style: italic;
+      opacity: .8;
+      margin-top: 4px
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 18px 0 0;
+    }
+
+    .tab {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      padding: 10px 16px 12px 44px;
+      background: linear-gradient(180deg, #fff7, #0000),
+        radial-gradient(120% 120% at 0% 0%, #fff6, #0000 60%);
+      border: 2px solid var(--gold);
+      border-bottom-width: 4px;
+      border-radius: 14px 14px 10px 10px;
+      font: 700 15px/1.2 Georgia, serif;
+      color: #2b2113;
+      box-shadow: 0 6px 0 var(--gold-d);
+      transform: translateY(0);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+
+    .tab::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--gold-d);
+      background: radial-gradient(circle at 30% 30%, #fff8, #0000 60%),
+        conic-gradient(from 0deg, #bda34d 0 33%, #a77c2f 33% 66%, #c8b061 66% 100%);
+      box-shadow: inset 0 0 0 2px #0002;
+    }
+
+    .tab:hover {
+      transform: translateY(1px);
+      box-shadow: 0 5px 0 var(--gold-d)
+    }
+
+    .tab.active {
+      transform: translateY(2px);
+      box-shadow: 0 4px 0 var(--gold-d);
+      background:
+        linear-gradient(180deg, #fff9, #0000), radial-gradient(120% 120% at 0% 0%, #fff7, #0000 60%)
+    }
+
+    .reader {
+      margin-top: 18px;
+      background: #fffdf5;
+      border: 2px solid #d4c18d;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      min-height: 260px;
+    }
+
+    .meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 14px;
+      opacity: .8;
+      margin: -6px 0 12px
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #0002;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #00000008
+    }
+
+    .content {
+      font-family: "Uncial Antiqua", "Old English Text MT", Georgia, "Times New Roman", serif;
+      font-size: 18px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      margin-top: 26px;
+      text-align: center;
+      font-size: 14px;
+      opacity: .8
+    }
+
+    @media (max-width:640px) {
+      .tab {
+        padding-left: 40px
+      }
+
+      .content {
+        font-size: 17px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="scroll">
+    <header>
+      <div>
+        <h1>Chroniques du Royaume</h1>
+        <div class="subtitle">Archives sacrées & récits oubliés</div>
+      </div>
+    </header>
+
+    <section class="tabs" id="tabs">
+      <button class="tab active" data-tab="prologue">Le commencement</button>
+      <button class="tab" data-tab="rois">Aux origines</button>
+      <button class="tab" data-tab="guerre">Le grand cataclysme</button>
+    </section>
+
+    <section class="reader" aria-live="polite" aria-busy="false">
+      <div class="meta">
+        <span class="badge">📜 <span id="currentTab">—</span></span>
+      </div>
+      <article class="content" id="content">Sélectionnez un onglet pour lire le parchemin…</article>
+    </section>
+
+    <footer>
+      ⚔️ Texte de Plutoium et site de Themostrandom01
+    </footer>
+
+    <div class="ribbons" aria-hidden="true">
+      <div class="ribbon"></div>
+      <div class="ribbon"></div>
+      <div class="ribbon"></div>
+    </div>
+  </main>
+
+  <script>
+    const $ = (sel, ctx = document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+
+    const tabsEl = $('#tabs');
+    const contentEl = $('#content');
+    const currentTabEl = $('#currentTab');
+    const statusEl = $('#status');
+
+    const texts = {
+      prologue: `Le commencement
+
+Chapitre 1 : Les premiers colons
+En l'an de grâce 1123, aux frontières du monde connu, un explorateur découvrit d’immenses terres aux ressources innombrables. Au fur et à mesure que la nouvelle se rependait, une foule d’hommes et de femmes se dirigeait vers ces nouvelles terres pour profiter de la richesse facile qu’elles promettaient. Et c’est ainsi que les premiers colons plantèrent leurs tentes sur le sol de ces contrées nouvelles. Mais alors que le derniers campements finissait de se dresser, les colons aperçurent au loin une colonne de fumée noire. Et lors que les éclaireurs arrivèrent là d’où provenait la fumée, ils découvrirent un campement calciné et pilé. C’est alors que les colons comprirent qu’ils n’étaient pas seuls à désirer les ressources de ces nouveau monde, des pillards venus de toute part était venue pour s’accaparer les richesse de cette terre encore sans lois. Pour se protéger, les campements se rallièrent en clans et les clans fondèrent des villages et des palissades se dressèrent aux 4 coins de la contrée. Et ainsi, pendant des mois, les colons vécurent en paix, ils bâtissaient des maisons, plantais des champs, extrayais des ressources… mais cette utopie fus de courte durée. En effet, un jour un éclaireur trouva par hasard une immense structure de pierre et en l’escaladant, il découvrit qu’elle étaient remplie de trésors. Et, alors qu’il s’émerveillait devant tant de richesse il vit, au centre de la structure, un œuf si énorme qu’il aurait pu faire tenir un bœuf à l’intérieur. Intrigué par sa découverte il parti chercher de l’aide à son village et le lendemain il revint chercher l’œuf avec une douzaine d’autres hommes et une grande charrette tirée par 4 bœufs. Une fois de retour à son village il montra l’œuf a tous les habitants et l’exposa sur la place. Cette nuit là on entendit résonner dans toute la contrée un cri indescriptible qui fit trembler la terre.
+
+Chapitre 2 : La grande guerre draconique
+Au lever du jour les villageois découvrirent avec horreur que sur toute la ligne d’horizon s’élevaient des colonnes de fumée et que dans le ciel volait une créature immense : un dragon bicéphale. Ce dragon n’était autre que Walyrian le roi des dragons, le seul dragon possédant à la fois les pouvoirs de feu et de glace, et l’œuf trouvé par l’éclaireur c’était le sien et il était venu le récupérer. Voyant ce monstre aux yeux plein de rage et comprenant ce qu’il voulait le druide du village saisit une grande lance et  s’écriât « Vas t’en monstre sanguinaire ou je transperce ton œuf » mais sa menace n’avait fait que révéler à Walyrian où se trouvait son œuf et il se jeta alors en direction du druide. Celui ci, dans un dernier élan de panique transperça l’œuf de part en part tuant ainsi, pour venger la mort de tous les colons, l’unique descendant du monstre qui les avait presque entièrement éradiqués. Suite à ce tragique évènement, les derniers clans s’allièrent pour combattre Walyrian et son armée de dragons et de wyverns. Mais après des mois de guerre acharnée il fallait se rendre à l’évidence : les humains ne faisaient pas le poids face aux dragons. Et, alors que tout semblait perdu, les maîtres du monde : « Le Staff » apparurent aux humains et leur offrirent une arme à la puissance démentielle pour vaincre Walyrian. C’est ainsi que, rassemblant leurs dernières force, les humains parvinrent à tuer le roi des dragons. Alors les autres dragons, désorganisés par ma mort de leur chef, se replièrent et allèrent se réfugier dans leur nids. Pour fêter cette grande victoire, les humains construisirent leur capitale sur le lieu de la bataille et décidèrent de l’appelèrent « Walyrian », comme le nom de celui à qui appartenait les ossements qui servirent de fondations à la ville.
+
+Chapitre 3 : Les 4 fondateurs
+Des années après la grande guerre draconique, alors que les humains avaient rebâtis leurs villages, replantés leurs champs, appris à dompter les dragon, et que Walyrian était devenait chaque jour plus grande, les 4 derniers guerriers ayant survécus à la guerre se réunirent et décidèrent qu’il fallait organiser la société grandissante des nouvelles terres. Mais avant de commencer la tâche colossale qui les attendait, il fallait trouver un nom pour cette  contrée et, après de longs débats, ils choisirent de l’appeler « Le royaume de Walyrian ». Quand le nom fut trouvé, ils décidèrent de séparer le royaume en 4 faction ; Spira : les combattants et les draconiers, Neurus : les scribes et les mages, Bigorny : les forgerons et les inventeurs, et Vito : les fermiers et les mineurs. C’est ainsi organisée que le royaume de Walyrian commença à devenir une grande nation, les membres de Spira combattaient pillards et monstres, les membres de Neurus développaient des nouvelles magies et relatais par écris toutes les découverte et techniques, les membres de Bigorny créaient toute sorte d’armes et d’outils, et les membres de Vito récoltaient des ressource pour faire vivre toute cette société.
+
+Chapitre 4 : La faction déchue
+Mais cela ne pouvait durer et à force de combattre les forces obscures, les membres de Spira furent peu à peu corrompus et un jour ils se retournèrent contre les autres factions et déclenchèrent une guerre sanglante. À cause de leur manque d’expertise dans l’art de la guerre, les autres factions se firent écraser et Spira finit par arriver aux portes de Walyrian. Alors les 3 factions allièrent leurs dernières forces et tous leurs savoirs pour créer des objets légendaires inspirés de l’arme ultime offerte des années auparavant par les maîtres du monde à leurs ancêtres. Avec ces objets ils repoussèrent la faction Spira qui se retrancha dans leur dernier bastion, « Le fort Dius » dans le quel elle attend encore le jour ou sa vengeance sonnera. Pour éviter qu’une telle chose arrive, les 3 factions écrient de lois et nommèrent un roi qui fonda une nouvelle faction guerrière qui avait pour unique but de défendre le royaume : Prota. Depuis bien des étrangers sont arrivés sur ces terres et maintenant c’est à eux de ne pas reproduire les erreurs du passé, c’est à eux d‘écrire leur propre histoire.
+`,
+
+      rois: `Aux origines
+
+Chapitre 1 : La première ère draconique
+En des temps oubliés, bien des lunes avant l’an de grâce où arrivèrent les colons humains, les dragons ne formaient pas qu’un seul peuple. En effet à cette époque trois tribus se battaient pour contrôler le royaume de Walyrian que l’on appelait à l’époque « Triterrabellum ». Ces trois tribus étaient la nation des dragons de glace, l’union des dragons de feu, et la horde des wyverns. Après des siècles de combats acharnés et de batailles sans fins les wyverns prenaient le dessus et le sort des dragons semblait scellé. Cette suprématie s'expliquait par la reproduction des wyverns, qui était beaucoup plus rapide que celle des dragons. De plus, en raison de la guerre incessante, il ne restait que peu de dragons adultes en vie et les œufs se faisaient de plus en plus rares. La domination des wyverns poussa les deux espèces de dragons au bord de l’extinction et le peu de survivants vivaient terrés dans de profondes grottes, se substituant de rats, de chauves-souris et de champignons. C'est en explorant de nouvelles grottes qu'un jeune dragon de feu rencontra une jeune dragonne de glace mourante. Il lui rapporta le peu de nourriture qu'il pu trouver, et après plusieurs jours à son chevet, la dragonne s'éveilla. Ils réalisèrent alors que seule la collaboration pourrait leur permettre de combattre les wyverns. Après avoir fait se rencontrer leurs chefs, une décision fut prise : étant donné que de toute évidence les dragons allaient s'éteindre, les deux espèces devaient s'allier pour faire front une dernière fois face aux wyverns. Et c’est alors que se prépara la dernières bataille des dragons, mâles et femelles, jeunes et vieillards, tous étaient prêts à se battre une toute dernière fois pour l’honneur de leur espèce.
+
+Chapitre 2 : L’extinction
+C’est par un beau matin brumeux que commença le dernier combat, les wyverns furent surpris par la soudaine alliance des dragons et par la fureur avec laquelle ils se battaient et, l’espace d’un instant, la bataille semblaient tourner en faveur des dragons. Mais cet instant fut de courte durée car très vite toutes les forces wyverns se rassemblèrent pour exterminer les dragons et c’est alors que le carnage commença. Les dragons combattirent de toutes leurs forces mais, malgré leur rage et leur détermination, au soir le dernier dragon tomba et tout Triterrabellum frissonna quand il rendit son dernier souffle. C’est donc lors d’un soir au soleil de sang que la race des dragons s’éteignit mais ils n’étaient pas mort en vain, les wyverns étaient fortement affaiblies, leurs forêts étaient calcinées, leurs œufs gelés, et leur gibier s’était enfuit sur des terres lointaines. Malgré leurs innombrables pertes, les wyverns étaient heureux d'avoir remporté la guerre mais ils ignoraient qu’au fond d’une immense grotte dormait le plus grand trésor des dragons : leurs derniers œufs, tous réunis au même endroit et au centre du nid, un œuf titanesque qui était presque dix fois plus grand que les autres œuf et qui luisait de teintes rouges et bleues.
+
+Chapitre 3 : La sanglante renaissance
+Des décennies après la dernière bataille opposant les wyverns et les dragons, par une nuit sombre et orageuse, on entendit dans les profondeurs de Triterrabellum des cris perçants, des cris que nul ne pensait ré-entendre, des cris de dragons… Quelques jours plus tard les premiers dragons commencèrent à planer dans le ciel et parmi eux se trouvait une créature étrange qui faisait déjà deux fois la taille d’un dragon adulte alors que ses semblables avait encore la taille de juvéniles. Il se passa ainsi des années sans que dragons et wyverns ne se rencontrent mais ce qui devait arriver arriva et, lors d’une chasse, les wyverns aperçurent le groupe de dragons. Pensant avoir à faire d’autre wyverns, ils se dirigèrent vers eux. Quel ne fût pas leur surprise quand ils arrivèrent face à face avec une centaine de dragons. Ils firent immédiatement demi-tour pour aller prévenir les autres wyverns mais derrière eux se trouvaient une créature gigantesque, un immense dragon à deux têtes qui crachait à la fois de la glace et des flammes. Après un court combat les dragons repartirent, laissant derrière eux les cadavres mutilés des wyverns. Pendant quelques dizaines d’années, les dragons continuèrent ce type d’escarmouche et, lors d’une nuit de pleine lune, la horde des wyverns toute entière leur fit front. Commença alors la bataille de la revanche, de la vengeance des dragons. Pendant que le combat battait son plein, surgit de derrière une montagne une créature, LA créature. Elle était là, plus grande que jamais, une seule de ses têtes faisait presque la taille d’un dragon adulte,  le battement de ses ailes rasait des forêts, elle crachait d’immenses flammes et des blizzards gigantesques, son cri résonnait dans tout Triterrabellum, et ses yeux lançait des éclairs. Alors la bataille tourna vite en faveur des dragons et, au levé du jour, les wyverns s’inclinèrent devant leur nouveau roi.
+
+Chapitre 4 : Le champion des ténèbres
+Alors que le royaume draconique se mettait en place et que touts les habitants de Triterrabellum se ralliaient au nouveau roi, quelques wyverns qui refusaient de se soumettre se retranchèrent dans de profondes forêts. Après des jours de discutions, une solution pour reconquérir Triterrabellum fût trouvée : puisque les dragons avaient un champion, il fallait un champion aux wyverns. Alors, ils usèrent de rites très anciens pour invoquer des puissances sombres que nul n’aurait jamais osé imaginer. Puis, un jeune wyvern fût choisi pour être leur champion  et, dans des cris si horribles qu’ils ferraient trembler des montagnes, il se transforma en un monstre surpuissant. Ainsi naquit le champion des wyvern qu’ils nommèrent « Spiradius », ce qui  veut dire « le typhon des esprits ». Spiradius n’était pas aussi grand que le roi des dragons mais il avait une forcée inimaginable, une mâchoire indestructible aux dents acérés, il crachait de puissants jets de liquide si corrosifs qu’ils lui permettait de découper des montagnes, et dans ses yeux on ne pouvait voir que le vide infini d’une âme entièrement rongée par la haine.
+
+Chapitre 5 : Le duel des semi-dieux
+Lorsque l’abominable cri de Spiradius résonna, tous les habitants du royaume draconique furent terrifiés et tous volèrent au plus vite qu’ils le pouvaient pour prévenir le roi. Mais quand ils arrivèrent à la montagne qui lui servait d’abri ils ne le trouvèrent pas. En effet, il était déjà parti, fonçant vers le cri, prêt à défendre son peuple contre tous les dangers. Quand les deux mastodonte arrivèrent face à face, il y eut un grand silence, les deux colosses s’observaient, se défiant du regard. Tout à coup, ils poussèrent leurs cris à l’unisson et se jetèrent l’un sur l’autre, le combat était d’une violence incroyable et à chaque coup de l’un des deux opposants des montagnes tombaient, des océans se vidaient, des gouffres s’ouvraient… Le combat continua ainsi durant des heures sans qu’un des deux adversaires ne semblent faiblir, Spiradius avait l’agilité et la rage des wyverns tandis que le roi dragon avait la puissance et résistance de ses semblables. Cependant, après trois jours d’un combat épique, Spiradius se retrouva au sol, écrasé par le gigantesque roi dragon et chacune des immenses têtes de son opposant lui arracha ses ailes pendant que son corps s’ouvrait de part en part, se vidant du liquide qu’il crachait. Alors le roi dragon le relâcha en lui jetant un regard dédaigneux qui semblait vouloir dire « vas mourir seul dans ton gouffre maintenant » et tous, dragons comme wyverns, s’inclinèrent devant le roi, tous sauf Spiradius qui se traînait lourdement vers une grotte. Depuis ce jour le roi dragon fût surnommé « Walyrian », ce qui signifie « l’invincible roi bicéphale », et plus aucune créature n’osa le défier.
+`,
+
+      guerre: `incoming`
+    };
+
+    function activateTab(btn) {
+      $$('.tab', tabsEl).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      contentEl.textContent = texts[tab] || 'Parchemin vide.';
+      currentTabEl.textContent = btn.textContent;
+      statusEl.textContent = 'Chargé';
+    }
+
+    tabsEl.addEventListener('click', e => {
+      const btn = e.target.closest('.tab');
+      if (!btn) return;
+      activateTab(btn);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const first = $('.tab');
+      if (first) { activateTab(first); }
+    });
+  </script>
+</body>
+
+</html>
